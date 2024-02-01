@@ -1,0 +1,1 @@
+These is a project base on javascript and express.js, to create a basic backend services using best practices and solid architecture. the logic would be a social media where the logged user could create post and commends.
