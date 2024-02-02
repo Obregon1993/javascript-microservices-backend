@@ -4,9 +4,36 @@ const Controller = require("./index");
 
 const router = express.Router();
 
-router.get("/", function (req, res) {
-  const list = Controller.list();
-  response.success(req, res, list, 200);
-});
+//ROUTES
+router.get("/", list);
+router.get("/:id", get);
+router.post("/:id", upsert);
+router.put("/:id", remove);
+
+//FUNCTIONS
+
+function list(req, res) {
+  Controller.list()
+    .then((list) => response.success(req, res, list, 200))
+    .catch((error) => response.error(req, res, error.message, 500));
+}
+
+function get(req, res) {
+  Controller.get(req.params.id)
+    .then((user) => response.success(req, res, user, 200))
+    .catch((error) => response.error(req, res, error.message, 500));
+}
+
+function upsert(req, res) {
+  Controller.get(req.body)
+    .then((user) => response.success(req, res, user, 201))
+    .catch((error) => response.error(req, res, error.message, 500));
+}
+
+function remove(req, res) {
+  Controller.get(req.params.id)
+    .then((user) => response.success(req, res, user, 200))
+    .catch((error) => response.error(req, res, error.message, 500));
+}
 
 module.exports = router;
