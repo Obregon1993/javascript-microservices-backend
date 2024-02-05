@@ -7,7 +7,7 @@ const router = express.Router();
 //ROUTES
 router.get("/", list);
 router.get("/:id", get);
-router.post("/:id", upsert);
+router.post("/", upsert);
 router.put("/:id", remove);
 
 //FUNCTIONS
@@ -25,7 +25,7 @@ function get(req, res) {
 }
 
 function upsert(req, res) {
-  Controller.get(req.body)
+  Controller.upsert(req.body)
     .then((user) => response.success(req, res, user, 201))
     .catch((error) => response.error(req, res, error.message, 500));
 }
