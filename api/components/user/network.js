@@ -1,6 +1,7 @@
 const express = require("express");
 const response = require("../../../network/response");
 const Controller = require("./index");
+const secure = require("./secure");
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
 router.get("/", list);
 router.get("/:id", get);
 router.post("/", upsert);
-router.put("/:id", remove);
+router.put("/", secure("update"), upsert);
 
 //FUNCTIONS
 

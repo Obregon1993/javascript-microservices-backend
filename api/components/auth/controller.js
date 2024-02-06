@@ -1,6 +1,8 @@
 const { v4: uuidv4 } = require("uuid");
-const TABLE = "auth";
+const bcrypt = require("bcrypt");
 const auth = require("../../../auth");
+
+const TABLE = "auth";
 
 module.exports = function (injectedStore) {
   let store = injectedStore;
@@ -14,14 +16,16 @@ module.exports = function (injectedStore) {
       password: password,
     });
 
-    if (data.password === password) {
-      return auth.sign(data);
-    } else {
-      throw new Error("Invalid Credentials");
-    }
+    return bcrypt.compare(password, data.password).then((theyMatch) => {
+      if (theyMatch) {
+        return auth.sign(data);
+      } else {
+        throw new Error("Invalid Credentials");
+      }
+    });
   }
 
-  function upsert(data) {
+  async function upsert(data) {
     const authData = { id: data.id };
 
     if (data.username) {
@@ -29,7 +33,7 @@ module.exports = function (injectedStore) {
     }
 
     if (data.password) {
-      authData.password = data.password;
+      authData.password = await bcrypt.hash(data.password, 5);
     }
 
     return store.upsert(TABLE, authData);
