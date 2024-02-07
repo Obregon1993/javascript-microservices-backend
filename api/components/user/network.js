@@ -13,28 +13,28 @@ router.put("/", secure("update"), upsert);
 
 //FUNCTIONS
 
-function list(req, res) {
+function list(req, res, next) {
   Controller.list()
     .then((list) => response.success(req, res, list, 200))
-    .catch((error) => response.error(req, res, error.message, 500));
+    .catch(next);
 }
 
-function get(req, res) {
+function get(req, res, next) {
   Controller.get(req.params.id)
     .then((user) => response.success(req, res, user, 200))
-    .catch((error) => response.error(req, res, error.message, 500));
+    .catch(next);
 }
 
-function upsert(req, res) {
+function upsert(req, res, next) {
   Controller.upsert(req.body)
     .then((user) => response.success(req, res, user, 201))
-    .catch((error) => response.error(req, res, error.message, 500));
+    .catch(next);
 }
 
-function remove(req, res) {
+function remove(req, res, next) {
   Controller.get(req.params.id)
     .then((user) => response.success(req, res, user, 200))
-    .catch((error) => response.error(req, res, error.message, 500));
+    .catch(next);
 }
 
 module.exports = router;
