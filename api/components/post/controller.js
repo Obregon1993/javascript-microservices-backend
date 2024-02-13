@@ -1,5 +1,5 @@
 const auth = require("../auth");
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 const TABLE = "post";
 
 module.exports = function (injectedStore) {
