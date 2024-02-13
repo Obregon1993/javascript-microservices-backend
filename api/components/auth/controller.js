@@ -13,12 +13,11 @@ module.exports = function (injectedStore) {
   async function login(username, password) {
     const data = await store.query(TABLE, {
       username: username,
-      password: password,
     });
 
     return bcrypt.compare(password, data.password).then((theyMatch) => {
       if (theyMatch) {
-        return auth.sign(data);
+        return auth.sign({ ...data });
       } else {
         throw new Error("Invalid Credentials");
       }

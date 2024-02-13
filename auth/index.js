@@ -14,10 +14,12 @@ function verify(token) {
 const check = {
   own: function (req, owner) {
     const decoded = decodeHeader(req);
-    console.log(decoded);
     if (decoded.id !== owner) {
       throw error("Ungrantend access denied", 401);
     }
+  },
+  logged: function (req) {
+    const decoded = decodeHeader(req);
   },
 };
 
