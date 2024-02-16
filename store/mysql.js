@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-
+const { v4: uuidv4 } = require("uuid");
 const config = require("../config");
 
 const dbconfig = {
@@ -56,10 +56,14 @@ function get(table, id) {
 
 function insert(table, data) {
   return new Promise((resolve, reject) => {
-    connection.query(`INSERT INTO ${table} SET ?`, data, (err, result) => {
-      if (err) return reject(err);
-      resolve(result);
-    });
+    connection.query(
+      `INSERT INTO ${table} SET ?`,
+      { ...data, id: uuidv4() },
+      (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      }
+    );
   });
 }
 
