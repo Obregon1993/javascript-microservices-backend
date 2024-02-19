@@ -1,15 +1,13 @@
 const express = require("express");
 const response = require("../network/response");
-const Store = require("../store/mysql");
+const Store = require("../store/redis");
 
 const router = express.Router();
 
 //ROUTES
 router.get("/:table", list);
 router.get("/:table/:id", get);
-router.post("/:table/", insert);
 router.put("/:table/", upsert);
-router.post("/:table/query", query);
 
 //FUNCTIONS
 
@@ -25,25 +23,10 @@ function get(req, res, next) {
     .catch((error) => response.error(req, res, "Invalid info for mysql", 400));
 }
 
-function insert(req, res, next) {
-  Store.insert(req.params.table, req.body)
-    .then((data) => response.success(req, res, data, 200))
-    .catch((error) => response.error(req, res, "Invalid info for mysql", 400));
-}
-
 function upsert(req, res, next) {
   Store.upsert(req.params.table, req.body)
     .then((data) => response.success(req, res, data, 200))
     .catch((error) => response.error(req, res, "Invalid info for mysql", 400));
-}
-
-async function query(req, res, next) {
-  const datos = await Store.query(
-    req.params.table,
-    req.body.query,
-    req.body.join
-  );
-  response.success(req, res, data, 200);
 }
 
 module.exports = router;
